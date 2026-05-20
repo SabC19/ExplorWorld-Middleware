@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import com.sabic.explorworld.model.TicketDTO;
-import com.sabic.explorworld.utils.DAOUtils;
 import com.sabic.explorworld.utils.JDBCUtils;
 
 public class TicketDAO {
@@ -45,7 +44,7 @@ public class TicketDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -88,7 +87,7 @@ public class TicketDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -102,7 +101,8 @@ public class TicketDAO {
     public TicketDTO update(Connection c, TicketDTO ticket) {
 
         PreparedStatement ps = null;
-
+        ResultSet rs = null;
+        
         try {
 
 
@@ -130,7 +130,7 @@ public class TicketDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(null, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -141,10 +141,11 @@ public class TicketDAO {
      * @param id El id del ticket a eliminar.
      * @return true si se eliminó el ticket, false si no se encontró o no se pudo eliminar
      */
-    public boolean delete(Long id) {
-        Connection c = null;
-        PreparedStatement ps = null;
+    public boolean delete(Connection c, Long id) {
 
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
         try {
             c = JDBCUtils.getConnection();
 
@@ -162,7 +163,7 @@ public class TicketDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(null, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return false;

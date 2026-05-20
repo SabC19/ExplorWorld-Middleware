@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.sabic.explorworld.dao.criteria.ParticipanteCriteria;
 import com.sabic.explorworld.model.Participante;
-import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 import com.sabic.explorworld.utils.SQLUtils;
 
 public class ParticipanteDAO {
@@ -50,7 +50,7 @@ public class ParticipanteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -82,7 +82,7 @@ public class ParticipanteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return participantes;
@@ -95,13 +95,6 @@ public class ParticipanteDAO {
      */
 
     public List<Participante> findByCriteria(Connection c, ParticipanteCriteria criteria) {
-    	
-    	// trace
-    	// debug
-    	// info
-    	// warn
-    	// error
-    	// fatal
     	
     	logger.info("Criteria: {}", criteria);
     	
@@ -126,6 +119,10 @@ public class ParticipanteDAO {
                 sql.append(" WHERE ").append(String.join(" AND ", condiciones));
             }
             
+            sql.append(" ORDER BY name ");
+            
+            
+
             logger.debug(sql);
 
             ps = c.prepareStatement(sql.toString());
@@ -133,7 +130,6 @@ public class ParticipanteDAO {
             for (Object param : parametros) {
                 ps.setObject(i++, param);
             }
-
             List<Participante> participantes = new ArrayList<>();
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -144,7 +140,7 @@ public class ParticipanteDAO {
         } catch (Exception e) {
             logger.error(e.getMessage()+": "+criteria, e);
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -189,7 +185,7 @@ public class ParticipanteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -204,6 +200,7 @@ public class ParticipanteDAO {
     public Participante update(Connection c, Participante participante) {
     	
         PreparedStatement ps = null;
+        ResultSet rs = null;
 
         try {
 
@@ -228,7 +225,7 @@ public class ParticipanteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(null, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -242,6 +239,7 @@ public class ParticipanteDAO {
 
     public boolean delete(Connection c, Long id) {
         PreparedStatement ps = null;
+        ResultSet rs = null;
 
         try {
 
@@ -257,7 +255,7 @@ public class ParticipanteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(null, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return false;

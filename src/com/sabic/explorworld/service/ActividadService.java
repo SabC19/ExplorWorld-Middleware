@@ -15,14 +15,14 @@ public interface ActividadService {
 	 * @param id
 	 * @return Actividad encontrada o null si no existe.
 	 */
-	public ActividadDTO findById(Long id);
+	public ActividadDTO findById(Long id) throws Exception;
 
 	/**
 	 * Búsqueda estructurada de actividades.
 	 * @param criteria Encapsula los criterios de búsqueda.
 	 * @return Lista de actividades encontradas.
 	 */
-	public List<ActividadDTO> findByCriteria(ActividadCriteria criteria);
+	public List<ActividadDTO> findByCriteria(ActividadCriteria criteria) throws Exception;
 
 	/**
 	 * Crea una nueva actividad.
@@ -30,7 +30,7 @@ public interface ActividadService {
 	 * @return Actividad creada con su id generado,
 	 * o null si la creación falla.
 	 */
-	public ActividadDTO create(ActividadDTO actividad);
+	public ActividadDTO create(ActividadDTO actividad) throws Exception;
 
 	/**
 	 * Actualiza todos los datos de una actividad,
@@ -38,13 +38,13 @@ public interface ActividadService {
 	 * @param actividad Datos a actualizar.
 	 * @return Actividad actualizada o null si falla.
 	 */
-	public void update(ActividadDTO actividad);
+	public ActividadDTO update(ActividadDTO actividad) throws Exception;
 
 	/**
 	 * Elimina una actividad.
 	 * @param id
 	 * @return Actividad eliminada o null si no existe.
 	 */
-	public void delete(Long id);
+	public boolean delete(Long id) throws Exception;
 
 }

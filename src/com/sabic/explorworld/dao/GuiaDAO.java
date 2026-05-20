@@ -10,6 +10,7 @@ import java.util.List;
 import com.sabic.explorworld.dao.criteria.GuiaCriteria;
 import com.sabic.explorworld.model.GuiaDTO;
 import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 import com.sabic.explorworld.utils.SQLUtils;
 
 public class GuiaDAO {
@@ -19,11 +20,6 @@ public class GuiaDAO {
 
     public GuiaDAO() {}
 
-    /**
-     * Busca un guía por su ID.
-     * @param id El ID del guía a buscar.
-     * @return Un objeto GuiaDTO si se encuentra, o null si no existe.
-     */
     public GuiaDTO findById(Connection c, Long id) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -43,16 +39,11 @@ public class GuiaDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+            JDBCUtils.close(rs, ps);
         }
         return null;
     }
 
-    /**
-     * Busca un guía por su email.
-     * @param email
-     * @return El guía encontrado o null si no existe.
-     */
     public GuiaDTO findByEmail(Connection c, String email) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -70,17 +61,12 @@ public class GuiaDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
     }
 
-    /**
-     * Busca los guías asociados a una actividad específica.
-     * @param actividadId
-     * @return Lista de guías asociados a la actividad, o una lista vacía si no hay resultados.
-     */
     public List<GuiaDTO> findByActividad(Connection c, Long actividadId) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -91,7 +77,7 @@ public class GuiaDAO {
             String sql = "SELECT g.id, g.name, g.lastname, g.nie, g.email, g.phone_number, g.birth_date, g.password, g.gender_id " +
                          "FROM guide g " +
                          "JOIN activity_guide ag ON g.id = ag.guide_id " +
-                         "WHERE ag.activity_id = ? ";
+                         "WHERE ag.activity_id = ? ORDER BY g.name ";
             ps = c.prepareStatement(sql);
             ps.setLong(1, actividadId);
             rs = ps.executeQuery();
@@ -103,17 +89,12 @@ public class GuiaDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return guias;
     }
 
-    /**
-     * Busca guías que coincidan con los criterios especificados.
-     * @param criteria
-     * @return Lista de guías que cumplen con los criterios, o una lista vacía si no hay resultados.
-     */
     public List<GuiaDTO> findBy(Connection c, GuiaCriteria criteria) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -137,6 +118,10 @@ public class GuiaDAO {
             if (!condiciones.isEmpty()) {
                 sql.append(" WHERE ").append(String.join(" AND ", condiciones));
             }
+            
+            sql.append(" ORDER BY name ");
+            
+          
 
             ps = c.prepareStatement(sql.toString());
             for (int i = 0; i < parametros.size(); i++) {
@@ -151,17 +136,12 @@ public class GuiaDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return guias;
     }
 
-    /**
-     * Crea un nuevo guía en la base de datos.
-     * @param guia El objeto GuiaDTO con los datos del nuevo guía (sin ID).
-     * @return El objeto GuiaDTO con el ID generado si la creación fue exitosa, o null si ocurrió un error.
-     */
     public GuiaDTO create(Connection c, GuiaDTO guia) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -192,17 +172,12 @@ public class GuiaDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
     }
 
-    /**
-	 * Actualiza los datos de un guía existente en la base de datos.
-	 * @param guia El objeto GuiaDTO con los datos actualizados del guía (debe incluir el ID).
-	 * @return El objeto GuiaDTO actualizado si la actualización fue exitosa, o null si ocurrió un error o el guía no existe.
-	 */
     public boolean update(Connection c, GuiaDTO guia) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -231,19 +206,15 @@ public class GuiaDAO {
          } catch (Exception e) {
         	 e.printStackTrace();
          } finally {
-			 DAOUtils.close(rs, ps, c);
+        	 JDBCUtils.close(rs, ps);
 		 }
         return false;
 	}
 
-    /**
-	 * Elimina un guía de la base de datos por su ID.
-	 * @param id El ID del guía a eliminar.
-	 * @return true si la eliminación fue exitosa, false si ocurrió un error o el guía no existe.
-	 */
     public boolean delete(Connection c, Long id) {
         
         PreparedStatement ps = null;
+        ResultSet rs = null;
 
         try {
             String sql = "DELETE FROM guide WHERE id = ?";
@@ -255,17 +226,12 @@ public class GuiaDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(null, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return false;
     }
 
-    /**
-     * Mapea una fila del ResultSet a un objeto GuiaDTO.
-     * @param rs El ResultSet con los datos del guía.
-     * @return Un objeto GuiaDTO con los datos mapeados.
-     */
     private GuiaDTO loadNext(ResultSet rs) throws Exception {
         int i = 1;
         GuiaDTO g = new GuiaDTO();

@@ -12,7 +12,7 @@ public class ActividadDAOTest {
 	public static final void testFindById() {
 		try {
 			ActividadDAO dao = new ActividadDAO();
-			ActividadDTO a = dao.findById(39l);
+			ActividadDTO a = dao.findById(null, 39l);
 			GuiaDTO g = null;
 			System.out.println(a.getId() + ": "
 					+ a.getNombre() + ": "
@@ -33,7 +33,7 @@ public class ActividadDAOTest {
 
 			ActividadCriteria criteria = new ActividadCriteria();
 
-			List<ActividadDTO> resultados = dao.findByCriteria(criteria);
+			List<ActividadDTO> resultados = dao.findByCriteria(null, criteria);
 
 			for (ActividadDTO a : resultados) {
 				System.out.println(a.getId()
@@ -67,7 +67,7 @@ public class ActividadDAOTest {
 			a.setInicioLugarId(1l);
 			a.setFinLugarId(2l);
 
-			dao.create(a);
+			dao.create(null, a);
 			System.out.println("Actividad creada con id: " + a.getId());
 
 		} catch (Exception e) {
@@ -79,13 +79,13 @@ public class ActividadDAOTest {
 		try {
 			ActividadDAO dao = new ActividadDAO();
 
-			ActividadDTO a = dao.findById(39l);
+			ActividadDTO a = dao.findById(null, 39l);
 
 				if (a != null) {
 				    a.setNombre("Descenso por montaña");
 				    a.setDescripcion("Actividad de descenso guiada");
 				    System.out.println("Actividad actualizada: " + a.getId() + ": " + a.getNombre() + ": " + a.getDescripcion());
-				    dao.update(a);
+				    dao.update(null, a);
 				} else {
 				    System.out.println("No se encontró la actividad con ID 39");
 				}
@@ -97,7 +97,7 @@ public class ActividadDAOTest {
 	public static final void testDelete() {
 		try {
 			ActividadDAO dao = new ActividadDAO();
-			dao.delete(39l);
+			dao.delete(null, 39l);
 			System.out.println("Actividad eliminada");
 
 		} catch (Exception e) {

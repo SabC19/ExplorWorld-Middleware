@@ -16,6 +16,11 @@ public class LugarServiceImpl implements LugarService {
     public LugarDTO findById(Long id) {
         return lugarDAO.findById(id);
     }
+    
+    @Override
+    public java.util.List<LugarDTO> findAll() {
+		return lugarDAO.findAll();
+	}
 
     @Override
     public LugarDTO create(LugarDTO lugar) {

@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import com.sabic.explorworld.model.TipoTransporte;
-import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 
 public class TipoTransporteDAO {
 
@@ -46,7 +46,7 @@ public class TipoTransporteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -83,7 +83,7 @@ public class TipoTransporteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -95,6 +95,7 @@ public class TipoTransporteDAO {
 	 */
 	public TipoTransporte update(Connection c, TipoTransporte tipoTransporte) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 
 		try {
 
@@ -117,7 +118,7 @@ public class TipoTransporteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(null, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -129,6 +130,7 @@ public class TipoTransporteDAO {
 	 */
 	public boolean delete(Connection c, Long id) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 
 		try {
 
@@ -145,7 +147,7 @@ public class TipoTransporteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(null, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return false;
 	}

@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import com.sabic.explorworld.model.Transporte;
-import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 
 public class TransporteDAO {
 	
@@ -51,7 +51,7 @@ public class TransporteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-		 DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -92,7 +92,7 @@ public class TransporteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -104,6 +104,7 @@ public class TransporteDAO {
 	 */
 	public Transporte update(Connection c, Transporte transporte) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 
 		try {
 
@@ -129,7 +130,7 @@ public class TransporteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {	
-			DAOUtils.close(null, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -142,6 +143,7 @@ public class TransporteDAO {
 
 	public boolean delete(Connection c, Long id) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 
 		try {
 
@@ -158,7 +160,7 @@ public class TransporteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(null, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return false;
 	}

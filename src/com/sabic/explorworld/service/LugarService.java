@@ -1,5 +1,7 @@
 package com.sabic.explorworld.service;
 
+import java.util.List;
+
 import com.sabic.explorworld.model.LugarDTO;
 
 public interface LugarService {
@@ -9,7 +11,13 @@ public interface LugarService {
 	 * @param id
 	 * @return El lugar encontrado.
 	 */
-    public LugarDTO findById(Long id);
+    public LugarDTO findById(Long id) ;
+    
+    /**
+	 * Busca todos los lugares.
+	 * @return Lista de lugares encontrados.
+	 */
+    public List<LugarDTO> findAll();
     
     /**
 	 * Crea un nuevo lugar.

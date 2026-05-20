@@ -1,5 +1,6 @@
 package com.sabic.explorworld.test.service;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.sabic.explorworld.dao.criteria.ActividadCriteria;
@@ -18,8 +19,9 @@ public class ActividadServiceTest {
 
 	/**
 	 * Prueba la recuperación de una actividad por su ID.
+	 * @throws Exception 
 	 */
-	public void testFindById(Long id) {
+	public void testFindById(Long id) throws Exception {
 		System.out.println("--- Test: ActividadService.findById(" + id + ") ---");
 		ActividadDTO act = service.findById(id);
 		if (act != null) {
@@ -32,31 +34,33 @@ public class ActividadServiceTest {
 
 	/**
 	 * Prueba los filtros de búsqueda según ActividadCriteria.
+	 * @throws Exception 
 	 */
-	public void testFindByCriteriaExtendido() {
+	public void testFindByCriteriaExtendido() throws Exception {
 		System.out.println("=== INICIANDO PRUEBAS DE CRITERIOS DE ACTIVIDAD ===");
 
 		// 1. FILTRO POR CATEGORÍA (Ejemplo: Senderismo - ID 5)
 		ActividadCriteria critCat = new ActividadCriteria();
-		critCat.setActividadTipoId(5L); 
+		critCat.setActividadTipoId(1L); 
 		ejecutarBusqueda("Filtro por Categoría (ID 5)", critCat);
 
 		// 2. FILTRO POR UBICACIÓN (Ejemplo: Destino ID 10)
 		ActividadCriteria critDestino = new ActividadCriteria();
-		critDestino.setFinLugarId(10L);
+		critDestino.setFinLugarId(2L);
 		ejecutarBusqueda("Filtro por Destino (ID 10)", critDestino);
 
 		// 3. FILTRO COMBINADO: Actividades de bajo coste en un destino
 		ActividadCriteria critCombo = new ActividadCriteria();
-		critCombo.setFinLugarId(10L);
-		critCombo.setPrecioMax(50.0);
+		critCombo.setFinLugarId(4L);
+		critCombo.setPrecioMax(100.00);
 		ejecutarBusqueda("Filtro Combinado: Destino 10 + Precio Max 50€", critCombo);
 	}
 
 	/**
 	 * Método auxiliar para imprimir los resultados de cada búsqueda.
+	 * @throws Exception 
 	 */
-	private void ejecutarBusqueda(String descripcion, ActividadCriteria criteria) {
+	private void ejecutarBusqueda(String descripcion, ActividadCriteria criteria) throws Exception {
 		System.out.println("\n--- " + descripcion + " ---");
 		List<ActividadDTO> resultados = service.findByCriteria(criteria);
 
@@ -73,8 +77,9 @@ public class ActividadServiceTest {
 
 	/**
 	 * Prueba la creación de una nueva actividad.
+	 * @throws Exception 
 	 */
-	public void testCreate() {
+	public void testCreate() throws Exception {
 		System.out.println("\n--- Test: ActividadService.create ---");
 		ActividadDTO nueva = new ActividadDTO();
 		nueva.setNombre("Tour Gastronómico Test");
@@ -91,8 +96,9 @@ public class ActividadServiceTest {
 
 	/**
 	 * Modifica una actividad existente para verificar el update.
+	 * @throws Exception 
 	 */
-	public void updateTest(Long id) {
+	public void updateTest(Long id) throws Exception {
 		System.out.println("\n--- Test: ActividadService.update ---");
 		ActividadDTO actividad = service.findById(id);
 		if (actividad != null) {
@@ -111,8 +117,9 @@ public class ActividadServiceTest {
 
 	/**
 	 * Prueba la eliminación de una actividad.
+	 * @throws Exception 
 	 */
-	public void deleteTest(Long id) {
+	public void deleteTest(Long id) throws Exception {
 		System.out.println("\n--- Test: ActividadService.delete(" + id + ") ---");
 		service.delete(id);
 		ActividadDTO deleted = service.findById(id);
@@ -123,14 +130,14 @@ public class ActividadServiceTest {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		ActividadServiceTest test = new ActividadServiceTest();
 
 		// 1. Buscar una actividad conocida
-		test.testFindById(1L);
+		// test.testFindById(1L);
 
 		// 2. Probar creación
-		// test.testCreate();
+		test.testCreate();
 
 		// 3. Probar criterios
 		// test.testFindByCriteriaExtendido();
@@ -140,5 +147,6 @@ public class ActividadServiceTest {
 
 		// 5. Probar borrado
 		// test.deleteTest(2L);
+		
 	}
 }

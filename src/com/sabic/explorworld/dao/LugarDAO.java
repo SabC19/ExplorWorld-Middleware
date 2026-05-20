@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sabic.explorworld.model.LugarDTO;
-import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 
 public class LugarDAO {
 
@@ -46,9 +48,42 @@ public class LugarDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
+	}
+	
+	/**
+	 * Recupera todos los lugares ordenados por ID.
+	 * @param c Conexión a la base de datos.
+	 * @return Lista de todos los lugares encontrados.
+	 */
+	public List<LugarDTO> findAll(Connection c) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<LugarDTO> lista = new ArrayList<>();
+
+		try {
+
+			StringBuilder sql = new StringBuilder(BASE_QUERY);
+			sql.append(" ORDER BY p.id ");
+
+			ps = c.prepareStatement(sql.toString());
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				lista.add(loadNext(rs));
+			}
+
+			return lista;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCUtils.close(rs, ps);
+		}
+
+		return lista;
 	}
 
 
@@ -59,7 +94,7 @@ public class LugarDAO {
 	 * @return El lugar creado (con ID asignado), o null si no se pudo crear.
 	 */
 	public LugarDTO create(Connection c, LugarDTO lugar) {
-
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -91,7 +126,7 @@ public class LugarDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -104,6 +139,7 @@ public class LugarDAO {
 	public LugarDTO update(Connection c, LugarDTO lugar) {
 
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 
 		try {
 
@@ -131,7 +167,7 @@ public class LugarDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(null, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -143,6 +179,7 @@ public class LugarDAO {
 	 */
 	public boolean delete(Connection c, Long id) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 
 		try {
 
@@ -159,7 +196,7 @@ public class LugarDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(null, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return false;
 	}

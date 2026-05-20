@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sabic.explorworld.model.LocalidadDTO;
-import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 
 public class LocalidadDAO {
 
@@ -43,7 +43,7 @@ public class LocalidadDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -79,7 +79,7 @@ public class LocalidadDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}

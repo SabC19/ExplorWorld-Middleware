@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sabic.explorworld.model.TipoActividadDTO;
-import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 
 public class TipoActividadDAO {
 
@@ -46,7 +46,7 @@ public class TipoActividadDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
         return null;
     }
@@ -77,7 +77,7 @@ public class TipoActividadDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
     	return null;
     }
@@ -115,7 +115,7 @@ public class TipoActividadDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -128,6 +128,7 @@ public class TipoActividadDAO {
      */
     public TipoActividadDTO update(Connection c, TipoActividadDTO tipoActividad) {
         PreparedStatement ps = null;
+        ResultSet rs = null;
 
         try {
 
@@ -151,7 +152,7 @@ public class TipoActividadDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(null, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -164,6 +165,7 @@ public class TipoActividadDAO {
      */
     public boolean delete(Connection c, Long id) {
         PreparedStatement ps = null;
+        ResultSet rs = null;
 
         try {
 
@@ -181,7 +183,7 @@ public class TipoActividadDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(null, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return false;

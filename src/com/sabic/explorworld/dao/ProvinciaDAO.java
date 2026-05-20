@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.sabic.explorworld.model.Provincia;
-import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 
 public class ProvinciaDAO {
 
@@ -42,7 +42,7 @@ public class ProvinciaDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;
@@ -75,7 +75,7 @@ public class ProvinciaDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+        	JDBCUtils.close(rs, ps);
         }
 
         return null;

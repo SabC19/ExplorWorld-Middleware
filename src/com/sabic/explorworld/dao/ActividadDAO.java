@@ -14,6 +14,7 @@ import com.sabic.explorworld.dao.criteria.ActividadCriteria;
 import com.sabic.explorworld.model.ActividadDTO;
 import com.sabic.explorworld.model.GuiaDTO;
 import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 import com.sabic.explorworld.utils.SQLUtils;
 
 /**
@@ -43,7 +44,7 @@ public class ActividadDAO {
 	/**
 	 * Busca una actividad por su ID.
 	 */
-	public ActividadDTO findById(Connection c, Long id) {
+	public ActividadDTO findById(Connection c, Long id) throws Exception {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -66,17 +67,16 @@ public class ActividadDAO {
 			return actividad;
 
 		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DAOUtils.close(rs, ps, c);
+			logger.error("Buscando actividad {}: {}", id, e);
+			throw e;
 		}
-		return null;
 	}
 
 	/**
 	 * Búsqueda dinámica por criterios.
 	 */
-	public List<ActividadDTO> findByCriteria(Connection c, ActividadCriteria criteria) {
+	public List<ActividadDTO> findByCriteria(Connection c, ActividadCriteria criteria) throws Exception{
+		
 		logger.info("Criteria: {}", criteria);
 
 		PreparedStatement ps = null;
@@ -132,6 +132,9 @@ public class ActividadDAO {
 				sql.append(" WHERE ");
 				sql.append(String.join(" AND ", condiciones));
 			}
+			
+			sql.append(" ORDER BY a.name ");
+            
 
 			ps = c.prepareStatement(sql.toString());
 			DAOUtils.setParameters(ps, parameters);
@@ -145,16 +148,16 @@ public class ActividadDAO {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
-		return null;
 	}
 
 	/**
 	 * Crea una nueva actividad.
 	 */
-	public ActividadDTO create(Connection c, ActividadDTO actividad) {
+	public ActividadDTO create(Connection c, ActividadDTO actividad) throws Exception {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -191,16 +194,14 @@ public class ActividadDAO {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			DAOUtils.close(rs, ps, c);
+			throw e;
 		}
-		return null;
 	}
 
 	/**
 	 * Actualiza una actividad existente.
 	 */
-	public ActividadDTO update(Connection c, ActividadDTO actividad) {
+	public ActividadDTO update(Connection c, ActividadDTO actividad) throws Exception {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -236,8 +237,9 @@ public class ActividadDAO {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
-			DAOUtils.close(rs, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
 		return null;
 	}
@@ -245,10 +247,11 @@ public class ActividadDAO {
 	/**
 	 * Elimina una actividad por su ID.
 	 */
-	public boolean delete(Connection c, Long id) {
+	public boolean delete(Connection c, Long id) throws Exception{
 
 		PreparedStatement ps = null;
-
+		ResultSet rs = null;
+		
 		try {
 
 			StringBuilder sql = new StringBuilder();
@@ -263,10 +266,11 @@ public class ActividadDAO {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		} finally {
-			DAOUtils.close(null, ps, c);
+			JDBCUtils.close(rs, ps);
 		}
-		return false;
+ 
 	}
 
 	/**

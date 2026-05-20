@@ -6,10 +6,15 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sabic.explorworld.model.Genero;
-import com.sabic.explorworld.utils.DAOUtils;
+import com.sabic.explorworld.utils.JDBCUtils;
 
 public class GeneroDAO {
+	
+    private static final Logger logger = LogManager.getLogger(GeneroDAO.class);
 
     private static final String BASE_QUERY =
         " SELECT id, name FROM gender ";
@@ -21,7 +26,7 @@ public class GeneroDAO {
      * @param id
      * @return El genero encontrado, o null si no existe.
      */
-    public Genero findById(Connection c, Long id) {
+    public Genero findById(Connection c, Long id) throws Exception {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -39,12 +44,11 @@ public class GeneroDAO {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            DAOUtils.close(rs, ps, c);
+            logger.error("Error al buscar actividad: {}", id, e);
+            throw e;
         }
+		return null;
 
-        return null;
     }
 
     /**
@@ -74,7 +78,7 @@ public class GeneroDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            DAOUtils.close(rs, ps, c);
+            JDBCUtils.close(rs, ps);
         }
 
         return null;
