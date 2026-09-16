@@ -41,8 +41,10 @@ public class ActividadDAO {
 		guiaDAO = new GuiaDAO();
 	}
 
+	
 	/**
 	 * Busca una actividad por su ID.
+	 * actividad
 	 */
 	public ActividadDTO findById(Connection c, Long id) throws Exception {
 
