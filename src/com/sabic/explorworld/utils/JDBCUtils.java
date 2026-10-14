@@ -20,28 +20,29 @@ public class JDBCUtils {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			return DriverManager.getConnection("jdbc:mysql://localhost:3306/explorworld", "root", "abc123.");
 		} catch (Exception e) {
-			logger.fatal(e);
+			e.printStackTrace();
 		}
 		return null;
 			
 	}
 	
 	public static void close(ResultSet rs, PreparedStatement ps) {
-		try {
-			if (rs != null)
-				rs.close();
-		} catch (Exception e) {
-			logger.error(e);
-		}
 		
-		try {
-			if (ps != null)
-				ps.close();
-		} catch (Exception e) {
-			logger.error(e);
-		}
+		try { if (rs != null) rs.close(); } catch (Exception ignored) {}
+		try { if (rs != null) ps.close(); } catch (Exception ignored) {}
+		
 	}
 	
+	public static void close (Connection c) {
+		try { if (c != null) c.close(); } catch (Exception ignored) {}
+	}
+
+	
+	/**
+	 * Factoriza el (commit o rollback) + cierre de conexión.
+	 * @param c
+	 * @param commitOrRollback 
+	 */
 	public static void close(Connection c, boolean commitOrRollback) {
 		if (c != null) {
 			try {

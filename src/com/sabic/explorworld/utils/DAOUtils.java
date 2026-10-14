@@ -1,6 +1,5 @@
 package com.sabic.explorworld.utils;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -8,10 +7,6 @@ import java.util.List;
 
 public class DAOUtils {
 	
-	public static Connection getConnection() throws SQLException {
-		return JDBCUtils.getConnection();
-	}
-
 	public static void setParameters(PreparedStatement ps, List<Object> params) throws SQLException {
 	    int i = 1;
 	    for (Object param : params) {
